@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rvje6ede)n-r02a_*l8_*1maz1(q@x4w0v97kzgw=jam-aikw6'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-rvje6ede)n-r02a_*l8_*1maz1(q@x4w0v97kzgw=jam-aikw6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+# Allow Cloud Run URLs and localhost
+ALLOWED_HOSTS = [
+    '.run.app',
+    'localhost',
+    '127.0.0.1',
+]
+
+# Add your Cloud Run service URL when deployed
+if os.environ.get('CLOUD_RUN_SERVICE_URL'):
+    ALLOWED_HOSTS.append(os.environ.get('CLOUD_RUN_SERVICE_URL'))
 
 
 # Application definition
@@ -42,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,6 +129,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Static files collection for production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise configuration for better static file serving
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
