@@ -1,0 +1,39 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Home - CLDRUN First{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to CLDRUN First</h1>
+            <p>Your premier Django application with modern, stunning design. Experience the future of web development
+                with our cutting-edge platform.</p>
+            <a href="{% url 'pages:about' %}" class="cta-button">Discover More</a>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">Our Features</h2>
+        <p class="section-subtitle">Explore what makes us stand out from the rest</p>
+
+        <div class="cards-grid">
+            <div class="card">
+                <h3>🚀 Lightning Fast</h3>
+                <p>Built with Django for optimal performance and scalability. Experience blazing-fast load times and
+                    smooth interactions.</p>
+            </div>
+            <div class="card">
+                <h3>🎨 Beautiful Design</h3>
+                <p>Modern, premium UI with glassmorphism effects, smooth animations, and vibrant gradients that
+                    captivate users.</p>
+            </div>
+            <div class="card">
+                <h3>📱 Fully Responsive</h3>
+                <p>Seamlessly adapts to any device - desktop, tablet, or mobile. Your content looks perfect everywhere.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
