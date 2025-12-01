@@ -33,9 +33,13 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+# Trust Cloud Run for CSRF (Fixes 403 Forbidden errors)
+CSRF_TRUSTED_ORIGINS = ['https://*.run.app']
+
 # Add your Cloud Run service URL when deployed
 if os.environ.get('CLOUD_RUN_SERVICE_URL'):
     ALLOWED_HOSTS.append(os.environ.get('CLOUD_RUN_SERVICE_URL'))
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('CLOUD_RUN_SERVICE_URL')}")
 
 
 # Application definition
@@ -133,8 +137,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Static files collection for production
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise configuration for better static file serving
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise configuration
+# Using CompressedStaticFilesStorage is safer than CompressedManifestStaticFilesStorage
+# as it won't crash if a referenced file is missing
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
