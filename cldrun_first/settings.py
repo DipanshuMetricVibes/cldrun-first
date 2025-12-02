@@ -133,7 +133,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Static files collection for production
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise configuration
+# WhiteNoise configuration for better static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Default primary key field type
